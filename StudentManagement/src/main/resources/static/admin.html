@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Manage School</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" rel="stylesheet">
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+
+    <!-- Your custom CSS -->
+    <link rel="stylesheet" href="css.css">
+</head>
+
+<body>
+    <div class="sidebar">
+        <center>
+            <img class="rotate-image" style="width: 120px; height: auto;" src="/img/logo.png" alt="">
+        </center>
+        <h2>Hello, Guest!</h2>
+        <ul>
+            <li><a href="#" id="DashboardTab" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li id="StudentTab"><a href="#"><i class="fas fa-user-graduate"></i> Students</a></li>
+            <li id="CoursesTab"><a href="#"><i class="fas fa-book"></i> Courses</a></li>
+            <li id="ClassTab"><a href="#"><i class="fas fa-chalkboard"></i> Class</a></li>
+            <li id="ScheduleTab"><a href="#"><i class="far fa-clock"></i> Time Schedule</a></li>
+            <li id="TeachersTab"><a href="#"><i class="fas fa-chalkboard-teacher"></i> Teachers</a></li>
+            <li id="EnrollmentTab"><a href="#"><i class="fas fa-user-plus"></i> Enrollment</a></li>
+            <li id="LogoutTab"><a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </div>
+    <div class="content">
+        <div class="top-bar">
+            <div class="container">
+                <div class="row">
+                    <div class="col" style="display: flex;">
+                        <span style="color: darkgrey;" class="admin-name">Admin Name :</span>
+                        <span style="margin-top: -2px;font-size: 20px;" id="username"></span>
+
+                    </div>
+                </div>
+            </div>
+            <div class="scrolling-text">
+                <marquee behavior="scroll" direction="right" scrollamount="10" style="font-size: 25px;">
+                    Welcome to School Management System - Providing Education Excellence! Our system offers a
+                    comprehensive suite of features including student enrollment, course management, teacher assignment,
+                    attendance tracking, grade management, and much more. With our user-friendly interface and powerful
+                    functionality, managing your school has never been easier. Experience the difference with School
+                    Management System today!
+                </marquee>
+            </div>
+
+        </div>
+        <div class="container-fluid Dashboard" id="container-fluid-Dashboard">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Students</h5>
+                            <p class="card-text" id="BoxTotallStudent"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Courses</h5>
+                            <p class="card-text" id="BoxTotallCourse"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Teachers</h5>
+                            <p class="card-text" id="BoxTotallLecture"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- StudentTab -->
+
+        <div class="container-fluid Student" id="Container-Fluid-Student">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="student-list">
+                        <h2>Student List</h2>
+                        <button style="margin-bottom:20px;" class="btn btn-primary btn-add-student"
+                            id="addStudentBtn">Add Student</button>
+                        <table id="studentTable" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+
+                                    <th>
+                                        <center>Student ID</center>
+                                    </th>
+                                    <th>
+                                        <center>Full Name</center>
+                                    </th>
+                                    <th>
+                                        <center>Email</center>
+                                    </th>
+                                    <th>
+                                        <center>Date of Birth</center>
+                                    </th>
+                                    <th>
+                                        <center>Action</center>
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Table rows will be dynamically generated using JavaScript -->
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Modal for adding a new student -->
+        <!-- Modal for adding a new student -->
+        <div class="modal fade" id="addStudentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content" style="width: 700px;">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabelText"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="display: flex;">
+                        <div>
+                            <div class="form-group">
+                                <label for="studentName">Name:</label>
+                                <input type="text" class="form-control" id="studentName">
+                            </div>
+                            <div class="form-group">
+                                <label for="studentAddress">Address:</label>
+
+
+                                <select class="form-control" id="studentAddress">
+                                    <option value="">Select teacher's Address</option>
+                                    <option value="Banteay Meanchey">Banteay Meanchey</option>
+                                    <option value="Battambang">Battambang</option>
+                                    <option value="Kampong Cham">Kampong Cham</option>
+                                    <option value="Kampong Chhnang">Kampong Chhnang</option>
+                                    <option value="Kampong Speu">Kampong Speu</option>
+                                    <option value="Kampong Thom">Kampong Thom</option>
+                                    <option value="Kampot">Kampot</option>
+                                    <option value="Kandal">Kandal</option>
+                                    <option value="Koh Kong">Koh Kong</option>
+                                    <option value="Kratie">Kratie</option>
+                                    <option value="Mondulkiri">Mondulkiri</option>
+                                    <option value="Oddar Meanchey">Oddar Meanchey</option>
+                                    <option value="Pailin">Pailin</option>
+                                    <option value="Phnom Penh">Phnom Penh</option>
+                                    <option value="Preah Sihanouk">Preah Sihanouk</option>
+                                    <option value="Preah Vihear">Preah Vihear</option>
+                                    <option value="Prey Veng">Prey Veng</option>
+                                    <option value="Pursat">Pursat</option>
+                                    <option value="Ratanakiri">Ratanakiri</option>
+                                    <option value="Siem Reap">Siem Reap</option>
+                                    <option value="Stung Treng">Stung Treng</option>
+                                    <option value="Svay Rieng">Svay Rieng</option>
+                                    <option value="Takéo">Takéo</option>
+                                    <option value="Tbong Khmum">Tbong Khmum</option>
+                                </select>
+
+
+                            </div>
+                            <div class="form-group">
+                                <label for="studentDOB">Date of Birth:</label>
+                                <input type="date" class="form-control" id="studentDOB">
+                            </div>
+                            <div class="form-group">
+                                <label for="studentEmail">Email:</label>
+                                <input type="email" class="form-control" id="studentEmail">
+                            </div>
+                            <div class="form-group">
+                                <label for="studentPassword">Password:</label>
+                                <input type="password" class="form-control" id="studentPassword">
+                            </div>
+                        </div>
+                        <div style="margin-left: 40px;">
+                            <div class="form-group">
+                                <label for="parentName">Parent's Name:</label>
+                                <input type="text" class="form-control" id="parentName">
+                            </div>
+                            <div class="form-group">
+                                <label for="parentPhoneNumber">Parent's Phone Number:</label>
+                                <input type="text" class="form-control" id="parentPhoneNumber">
+                            </div>
+
+
+                            <div class="form-group" style="margin-top: 50px;">
+                                <label for="studentProfile">Profile:</label>
+                                <input type="file" class="form-control-file" name="profile" id="studentProfile">
+                            </div>
+                            <div class="form-group" style="margin-top: 20px;">
+                                <label for="studentPhoneNumber">Student's Phone Number:</label>
+                                <input type="text" class="form-control" name="studentPhoneNumber"
+                                    id="studentPhoneNumber">
+                            </div>
+
+                            <div class="form-group" style="margin-top: 20px;">
+                                <label for="studentMajor">Student's Major</label>
+                                <select class="form-select" aria-label="Default select example" id="student-skill">
+                                    <option selected>Open this select menu</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="saveStudentBtn">Add</button>
+                        <button type="button" class="btn btn-danger" id="updateStudentBtn">Update</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="Class-content" style="display: none;" id="Container-Fluid-Class">
+            <div id="class-topbar">
+                <ul style="display: flex;list-style: none;">
+                    <li id="tabclasshave"><i class="fas fa-chalkboard"></i> Class</li>
+                    <li id="addclasstab"><i class="fas fa-plus"></i> Add Class</li>
+                </ul>
+                <hr style="background-color: darkgrey; max-width: 100%;">
+            </div>
+
+            <h3 class="addclasstext">Add Class</h3>
+            <button style="margin-bottom: 40px;" type="button" class="btn btn-primary" id="addClassBtn"
+                data-toggle="modal" data-target="#addClassModal">Add Class</button>
+
+            <div id="classList"></div>
+
+
+
+            <div class="modal fade" id="addClassModal" tabindex="-1" role="dialog" aria-labelledby="addClassModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addClassModalLabel">Add New Claass</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+
+                        <div class="modal-body">
+                            <form id="addClassForm">
+                                <div class="form-group">
+                                    <label for="course-title">Class Name</label>
+                                    <input type="text" class="form-control" id="class-title"
+                                        placeholder="Enter class name">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="saveClassBtn">Save changes</button>
+                            <!-- Changed button ID -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+
+        <!-- EnrollmentTab -->
+
+        <div class="container" id="Container-Fluid-Enrollment">
+            <div class="row">
+                <div class="col-md-6 offset-md-3">
+                    <div class="enrollment-form">
+                        <h3>Enroll Student</h3>
+                        <form>
+                            <div style="display: flex;">
+                                <div>
+                                    <div class="form-group">
+                                        <label for="classSelect">Select Class:</label>
+                                        <select style="width: 320px;" class="form-control" id="classSelect">
+
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="startDate">Start Date:</label>
+                                        <input type="date" class="form-control" id="startDate">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="endDate">End Date:</label>
+                                        <input type="date" class="form-control" id="endDate">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="course">Course:</label>
+                                        <select class="form-control" id="course"></select>
+                                    </div>
+                                </div>
+                                <hr class="vertical-line">
+                                <div style="margin-left: 12px;">
+                                    <div class="form-group">
+                                        <label for="time">Time:</label>
+                                        <select style="width: 320px;" class="form-select" id="timeEnrollment">
+                                            <!-- Time options will be dynamically populated here -->
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="studentSelect">Select Student:</label>
+                                        <select style="width: 320px;" class="form-control" id="studentSelect">
+                                            <option value="">-- Select Student --</option>
+
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="lecturerSelect">Select Lecturer:</label>
+                                        <select style="width: 320px;" class="form-control" id="lecturerSelect">
+                                            <option value="">-- Select Lecturer --</option>
+                                            <!-- Populate options dynamically here -->
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <button type="submit" id="btn-enrollment" style="width: 120px;"
+                                class="btn btn-primary">Enroll</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- End EnrollmentTab -->
+
+
+
+
+
+        <!-- Lecturer -->
+
+        <!-- Lectures Content -->
+        <div class="lectures-content" id="Container-Fluid-Lecture">
+            <h3>Lectures</h3>
+            <button type="button" style="margin-bottom: 5%;" class="btn btn-primary" id="addLectureBtn"
+                data-toggle="modal" data-target="#addLectureModal">Add Lecture</button>
+
+
+            <table id="lectureTable" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Address</th>
+                        <th>Date of Birth</th>
+                        <th>Skill</th>
+                        <th>
+                            <center>Action</center>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+
+
+            <!-- Add New Lecture Modal -->
+            <div class="modal fade" id="addLectureModal" tabindex="-1" role="dialog"
+                aria-labelledby="addLectureModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content" id="lecturemodelwidth">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addLectureModalLabeltext"></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+
+
+                        </div>
+                        <div class="modal-body">
+                            <form style="display: flex;">
+                                <div>
+                                    <div class="form-group">
+                                        <label for="teacher-name">Name</label>
+                                        <input type="text" class="form-control" id="teacher-name"
+                                            placeholder="Enter teacher's name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="teacher-email">Email address</label>
+                                        <input type="email" class="form-control" id="teacher-email"
+                                            placeholder="Enter teacher's email">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="teacher-address">Address</label>
+                                        <select class="form-control" id="teacher-address">
+                                            <option value="">Select teacher's Address</option>
+                                            <option value="Banteay Meanchey">Banteay Meanchey</option>
+                                            <option value="Battambang">Battambang</option>
+                                            <option value="Kampong Cham">Kampong Cham</option>
+                                            <option value="Kampong Chhnang">Kampong Chhnang</option>
+                                            <option value="Kampong Speu">Kampong Speu</option>
+                                            <option value="Kampong Thom">Kampong Thom</option>
+                                            <option value="Kampot">Kampot</option>
+                                            <option value="Kandal">Kandal</option>
+                                            <option value="Koh Kong">Koh Kong</option>
+                                            <option value="Kratie">Kratie</option>
+                                            <option value="Mondulkiri">Mondulkiri</option>
+                                            <option value="Oddar Meanchey">Oddar Meanchey</option>
+                                            <option value="Pailin">Pailin</option>
+                                            <option value="Phnom Penh">Phnom Penh</option>
+                                            <option value="Preah Sihanouk">Preah Sihanouk</option>
+                                            <option value="Preah Vihear">Preah Vihear</option>
+
+                                            <option value="Prey Veng">Prey Veng</option>
+                                            <option value="Pursat">Pursat</option>
+                                            <option value="Ratanakiri">Ratanakiri</option>
+                                            <option value="Siem Reap">Siem Reap</option>
+                                            <option value="Stung Treng">Stung Treng</option>
+                                            <option value="Svay Rieng">Svay Rieng</option>
+                                            <option value="Takéo">Takéo</option>
+                                            <option value="Tbong Khmum">Tbong Khmum</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="teacher-dob">Date of Birth</label>
+                                        <input type="date" class="form-control" id="teacher-dob">
+                                    </div>
+                                </div>
+                                <div style="margin-left: 35px;">
+                                    <div class="form-group">
+                                        <label for="teacher-password">Password</label>
+                                        <input type="password" class="form-control" id="teacher-password"
+                                            placeholder="Enter password">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="teacher-profile">Profile</label>
+                                        <input type="file" name="" id="teacher-profile">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="teacher-skill">Skill</label>
+                                        <select class="form-select" aria-label="Default select example"
+                                            id="teacher-skill">
+                                            <option selected>Open this select menu</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" id="BtnGenerateLecture" class="btn btn-primary">Add</button>
+                            <button type="button" class="btn btn-danger" id="updateLectureBtn">Update</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        </div>
+        <!-- EndLecture -->
+
+
+
+        <!-- Courses Content -->
+        <div class="courses-content" id="Container-Fluid-Course">
+            <h3>Courses</h3>
+            <button style="margin-bottom: 40px;" type="button" class="btn btn-primary" id="addCourseBtn"
+                data-toggle="modal" data-target="#addCourseModal">Add Course</button>
+
+            <!-- Course Cards -->
+            <div class="row">
+                <div class="col-md-4" th:each="course : ${courses}">
+                    <div class="container" id="course-container">
+
+                    </div>
+                </div>
+            </div>
+            <!-- Add New Course Modal -->
+            <!-- Add New Course Modal -->
+            <div class="modal fade" id="addCourseModal" tabindex="-1" role="dialog"
+                aria-labelledby="addCourseModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addCourseModalLabel">Add New Course</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="addCourseForm">
+                                <div class="form-group">
+                                    <label for="course-title">Course Name</label>
+                                    <input type="text" class="form-control" id="course-title"
+                                        placeholder="Enter course name">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="saveCourseBtn">Save changes</button>
+                            <!-- Changed button ID -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div id="timeScheduleModal" style="display: none;">
+            <h3>Schedule</h3>
+            <button style="margin-bottom: 40px;" type="button" class="btn btn-primary" id="addScheduleBtn"
+                data-toggle="modal" data-target="#timeScheduleModals">Add Schedule</button>
+
+
+
+            <div class="container">
+                <h3>Study Schedules</h3>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Day of Week</th>
+                            <th>Start Time</th>
+                            <th>End Time</th>
+                            <th>Action</th>
+
+                        </tr>
+                    </thead>
+                    <tbody id="studyScheduleTableBody">
+                        <!-- Data will be dynamically populated here -->
+                    </tbody>
+                </table>
+            </div>
+
+        
+            <div class="modal fade" id="timeScheduleModals" tabindex="-1" role="dialog"
+                aria-labelledby="timeScheduleModals" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="studyScheduleModalLabel">Study Schedule</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="studyScheduleForm">
+                                <div class="form-group">
+                                    <label for="dayOfWeek">Day of Week</label>
+                                    <select class="form-select" id="dayOfWeek">
+                                        <option value="Mon-Fri">Mon-Fri</option>
+                                        <option value="Sat-Sun">Sat-Sun</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="startTime">Start Time</label>
+                                    <input type="time" class="form-control" id="startTime">
+                                </div>
+                                <div class="form-group">
+                                    <label for="endTime">End Time</label>
+                                    <input type="time" class="form-control" id="endTime">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="saveStudyScheduleBtn">Save changes</button>
+                            <button type="button" style="display: none;" class="btn btn-primary" id="UpdateTime">Update</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        
+        
+        
+        
+    </div>
+
+    <!-- Update Course Modal -->
+    <div class="modal fade" id="updateCourseModal" tabindex="-1" aria-labelledby="updateCourseModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateCourseModalLabel">Update Course</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="updateCourseForm">
+                        <div class="mb-3">
+                            <label for="courseName" class="form-label">Course Name:</label>
+                            <input type="text" class="form-control" id="courseName" name="courseName" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update Course</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="enrollmentModalwarning" tabindex="-1" role="dialog" aria-labelledby="enrollmentModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" style="width: 620px;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="enrollmentModalLabel">
+                        <i style="color: rgb(228, 244, 5);" class="fas fa-exclamation-triangle"></i> Warning
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Please review the enrollment process before proceeding.</p>
+                    <p><strong>Important:</strong> Make sure to complete each step of the enrollment process in order, from top to bottom.</p>
+                    <p>For Start Date & End Date mush be the same in a class</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    
+
+
+
+
+
+
+
+
+    <!-- Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- DataTables JavaScript -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+
+<!-- SweetAlert JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Your custom JavaScript -->
+<script src="js.js"></script>
+</body>
+
+</html>
