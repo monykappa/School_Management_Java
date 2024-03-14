@@ -19,8 +19,22 @@ public class StudyScheduleController {
         this.studyScheduleRepository = studyScheduleRepository;
     }
 
+    @SuppressWarnings("null")
+    @PostMapping("/save-study-schedule")
+    public ResponseEntity<String> saveStudySchedule(@RequestBody StudySchedule newSchedule) {
+        try {
+            // Save the new study schedule
+            studyScheduleRepository.save(newSchedule);
+            return ResponseEntity.ok("Study schedule saved successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An error occurred while saving study schedule: " + e.getMessage());
+        }
+    }
+
     @PutMapping("/update-study-schedule/{timeId}")
-    public ResponseEntity<String> updateStudySchedule(@PathVariable int timeId, @RequestBody StudySchedule updatedSchedule) {
+    public ResponseEntity<String> updateStudySchedule(@PathVariable int timeId,
+            @RequestBody StudySchedule updatedSchedule) {
         try {
             // Retrieve the existing study schedule by its timeId
             Optional<StudySchedule> existingScheduleOptional = studyScheduleRepository.findById(timeId);
@@ -30,7 +44,7 @@ public class StudyScheduleController {
                 existingSchedule.setDayOfWeek(updatedSchedule.getDayOfWeek());
                 existingSchedule.setStartTime(updatedSchedule.getStartTime());
                 existingSchedule.setEndTime(updatedSchedule.getEndTime());
-                
+
                 // Save the updated study schedule
                 studyScheduleRepository.save(existingSchedule);
 
@@ -39,7 +53,8 @@ public class StudyScheduleController {
                 return ResponseEntity.notFound().build();
             }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while updating study schedule: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An error occurred while updating study schedule: " + e.getMessage());
         }
     }
 
@@ -55,8 +70,9 @@ public class StudyScheduleController {
             return ResponseEntity.ok("Study schedule deleted successfully!");
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while deleting study schedule.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An error occurred while deleting study schedule.");
         }
     }
-    
+
 }
