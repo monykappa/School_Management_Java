@@ -1043,7 +1043,7 @@ $("#btn-enrollment").on("click", (event) => {
     const classId = $("#classSelect").val();
     const startDate = $("#startDate").val();
     const endDate = $("#endDate").val();
-    const courseId = $("#course option:selected").attr("course_id");
+    const courseId = parseInt($("#course option:selected").attr("course_id"));
     const timeId = $("#timeEnrollment option:selected").attr("datatimeid");
     const studentId = $("#studentSelect").val();
     const lecturerId = $("#lecturerSelect").val();
@@ -1052,11 +1052,12 @@ $("#btn-enrollment").on("click", (event) => {
         myClass: { classId: classId },
         startDate: startDate,
         endDate: endDate,
-        course: { course_id: courseId },
+        course: { id: courseId },
         studyTime: { timeId: timeId },
         student: { studentId: studentId },
         lecturer: { lecturerId: lecturerId }
     };
+    
 
     console.log(enrollmentData);
 

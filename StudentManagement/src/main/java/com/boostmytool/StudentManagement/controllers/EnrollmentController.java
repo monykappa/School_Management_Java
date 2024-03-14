@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @RequestMapping("/enrollments")
 public class EnrollmentController {
@@ -23,8 +22,8 @@ public class EnrollmentController {
     private final CourseRepository courseRepository;
 
     public EnrollmentController(EnrollmentRepository enrollmentRepository,
-                                 StudyScheduleRepository studyScheduleRepository,
-                                 CourseRepository courseRepository) {
+            StudyScheduleRepository studyScheduleRepository,
+            CourseRepository courseRepository) {
         this.enrollmentRepository = enrollmentRepository;
         this.studyScheduleRepository = studyScheduleRepository;
         this.courseRepository = courseRepository;
@@ -39,10 +38,18 @@ public class EnrollmentController {
 
             // Check if course is associated with enrollment
             Course course = enrollment.getCourse();
-            if (course != null && course.getId() == null) {
-                // If the course ID is null, save the course explicitly
-                course = courseRepository.save(course);
+            if (course != null && course.getId() != null) {
+                // Fetch the course from the database
+                course = courseRepository.findById(course.getId()).orElse(null);
+                if (course == null) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                            .body("Course with ID " + enrollment.getCourse().getId() + " not found.");
+                }
+                // Set the fetched course to enrollment
                 enrollment.setCourse(course);
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("Invalid course provided.");
             }
 
             // Save enrollment
@@ -59,4 +66,5 @@ public class EnrollmentController {
                     .body("Error occurred while creating enrollment: " + e.getMessage());
         }
     }
+
 }
